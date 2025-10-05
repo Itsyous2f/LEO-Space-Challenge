@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMIT Mineral Data Visualization</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <nav class="controls">
+        <div class="control-group">
+            <label for="dataset-select">Dataset:</label>
+            <select id="dataset-select">
+                <option value="0">Dataset 1 (2025-10-02 06:48:04)</option>
+                <option value="1">Dataset 2 (2025-10-02 06:48:16)</option>
+            </select>
+        </div>
+        
+        <div class="control-group">
+            <label for="group-select">Mineral Group:</label>
+            <select id="group-select">
+                <option value="both">Both Groups</option>
+                <option value="group1">Group 1 Only</option>
+                <option value="group2">Group 2 Only</option>
+            </select>
+        </div>
+        
+        <div class="control-group">
+            <label for="visualization-type">Visualization:</label>
+            <select id="visualization-type">
+                <option value="heatmap">Band Depth Heatmap</option>
+                <option value="mineral-map">Mineral ID Map</option>
+                <option value="statistics">Statistics Charts</option>
+            </select>
+        </div>
+        
+        <div class="control-group">
+            <button id="load-data-btn">Load Data</button>
+            <button id="export-btn">Export Image</button>
+        </div>
+    </nav>
+
+    <main class="dashboard">
+        <section class="info-panel">
+            <div class="dataset-info">
+                <h3>Dataset Information</h3>
+                <div id="dataset-metadata">
+                    <p>Select a dataset to view information</p>
+                </div>
+            </div>
+            
+            <div class="mineral-legend">
+                <h3>Mineral Legend</h3>
+                <div id="mineral-list">
+                    <p>Load data to see mineral types</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="visualization-panel">
+            <div class="viz-container">
+                <div id="loading-indicator" class="loading">
+                    <div class="spinner"></div>
+                    <p>Loading EMIT data...</p>
+                </div>
+                
+                <div id="main-visualization" class="hidden">
+                    <h3 id="viz-title">Band Depth Heatmap</h3>
+                    <div id="heatmap-container">
+                        <div id="group1-heatmap" class="heatmap-section">
+                            <h4>Group 1 Minerals</h4>
+                            <svg id="group1-svg"></svg>
+                            <div class="colorbar" id="group1-colorbar"></div>
+                        </div>
+                        <div id="group2-heatmap" class="heatmap-section">
+                            <h4>Group 2 Minerals</h4>
+                            <svg id="group2-svg"></svg>
+                            <div class="colorbar" id="group2-colorbar"></div>
+                        </div>
+                    </div>
+                    
+                    <div id="mineral-map-container" class="hidden">
+                        <div id="mineral-map"></div>
+                    </div>
+                    
+                    <div id="statistics-container" class="hidden">
+                        <div class="stats-grid">
+                            <div class="stat-chart">
+                                <canvas id="mineral-count-chart"></canvas>
+                            </div>
+                            <div class="stat-chart">
+                                <canvas id="band-depth-chart"></canvas>
+                            </div>
+                            <div class="stat-chart">
+                                <canvas id="spatial-distribution-chart"></canvas>
+                            </div>
+                            <div class="stat-chart">
+                                <canvas id="comparison-chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="error-display" class="error hidden">
+                    <h3>Error Loading Data</h3>
+                    <p id="error-message"></p>
+                    <button onclick="location.reload()">Reload Page</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>About EMIT</h4>
+                <p>The Earth Surface Mineral Dust Source Investigation (EMIT) is a NASA Earth Ventures-Instrument mission that maps mineral dust source composition from the International Space Station.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Data Information</h4>
+                <p>Band Depth: Measure of mineral absorption strength (0-1)</p>
+                <p>Mineral ID: Unique identifier for detected mineral types</p>
+                <p>Spatial Resolution: ~60m per pixel</p>
+            </div>
+            <div class="footer-section">
+                <h4>Controls</h4>
+                <p><strong>Mouse:</strong> Hover for pixel details</p>
+                <p><strong>Zoom:</strong> Scroll wheel on visualizations</p>
+                <p><strong>Pan:</strong> Click and drag on maps</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 EMIT Data Visualization | Data: NASA JPL | Visualization: Custom Web Interface</p>
+        </div>
+    </footer>
+
+    <div id="tooltip" class="tooltip hidden">
+        <div id="tooltip-content"></div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
